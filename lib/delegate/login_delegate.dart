@@ -26,4 +26,11 @@ class LoginDelegate {
           builder: (context) => UserScreen(),
         ));
   }
+
+  static mudarParaTelaDeCadastrarRecurso(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegisterScreen())
+    );
+  }
 }
