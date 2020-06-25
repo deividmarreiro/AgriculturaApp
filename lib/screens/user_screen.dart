@@ -255,30 +255,24 @@ class _UserScreenState extends State<UserScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'Cadastrar Recurso',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 35.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 30.0),
-                  _constroiCadastroNome(),
-                  SizedBox(height: 15.0),
-                  _constroiCadastroEmail(),
-                  SizedBox(height: 15.0),
-                  _constroiCadastroSenha(),
-                  SizedBox(height: 15.0),
-                  _constroiCadastroSenhaConfirmar(),
-                  SizedBox(height: 20.0),
-                  _botaoDeRegistrar(),
-                  SizedBox(height: 20.0),
-                  //_botaoRegistrar(),
+                DataTable(
+                  columns: const <DataColumn>[
+                    DataColumn(label: Text('Nome')),
+                    DataColumn(label: Text('Tipo')),
+                    DataColumn(label: Text('Quantidade')),
+                  ],
+                  rows: const <DataRow>[
+                    DataRow(cells: <DataCell>[
+                      DataCell(Text('Feijão')),
+                      DataCell(Text('Plantação')),
+                      DataCell(Text('4845616515')),
+                    ])
+                  ],
+                ),
+                _botaoDeRegistrar(),
                 ],
               ),
             ),
-          ),
         ],
       ),
     );
