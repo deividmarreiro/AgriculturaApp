@@ -81,7 +81,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                 Icons.filter_list,
                 color: Colors.white,
               ),
-              hintText: 'Entre com seu Email',
+              hintText: 'Entre com a Quantidade',
               hintStyle: TextStyle(color: Colors.white54),
             ),
           ),
@@ -180,7 +180,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Botão de registro apertado'),
+        onPressed: () => print('Botão de cadastro apertado'),
         padding: EdgeInsets.all(15.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
@@ -270,7 +270,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                   SizedBox(height: 15.0),
                   _constroiCadastroSenha(),
                   SizedBox(height: 15.0),
-                  _constroiCadastroSenhaConfirmar(),
+                  //_constroiCadastroSenhaConfirmar(),
                   SizedBox(height: 20.0),
                   _botaoDeRegistrar(),
                   SizedBox(height: 20.0),

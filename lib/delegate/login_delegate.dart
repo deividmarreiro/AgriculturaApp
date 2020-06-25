@@ -1,4 +1,5 @@
 import 'package:agriculturapp/screens/login_screen.dart';
+import 'package:agriculturapp/screens/registerResource_screen.dart';
 import 'package:agriculturapp/screens/register_screen.dart';
 import 'package:agriculturapp/screens/user_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,7 +31,7 @@ class LoginDelegate {
   static mudarParaTelaDeCadastrarRecurso(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterScreen())
+      MaterialPageRoute(builder: (context) => RegisterResourceScreen())
     );
   }
 }

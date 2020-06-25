@@ -1,7 +1,7 @@
 import 'package:agriculturapp/delegate/login_delegate.dart';
 import 'package:flutter/material.dart';
 
-class UserScreen  extends StatefulWidget {
+class UserScreen extends StatefulWidget {
   @override
   _UserScreenState createState() => _UserScreenState();
 }
@@ -177,16 +177,16 @@ class _UserScreenState extends State<UserScreen> {
   Widget _botaoDeRegistrar() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
+      width: 100,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () => LoginDelegate.mudarParaTelaDeCadastrarRecurso(context),
         padding: EdgeInsets.all(15.0),
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
         color: Colors.white,
         child: Text(
-          'CADASTRAR',
+          '+',
           style: TextStyle(
             color: Color(0xFF00C853),
             letterSpacing: 2.5,
@@ -225,6 +225,13 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Container(),
+        backgroundColor: Color(0xFF00E676),
+        title: Text('Lista de Recursos'),
+        centerTitle: true,
+      ),
+      drawer: Drawer(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -246,15 +253,10 @@ class _UserScreenState extends State<UserScreen> {
           ),
           Container(
             height: double.infinity,
-            child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
-                horizontal: 40.0,
-                vertical: 120.0,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
                 DataTable(
                   columns: const <DataColumn>[
                     DataColumn(label: Text('Nome')),
@@ -269,6 +271,8 @@ class _UserScreenState extends State<UserScreen> {
                     ])
                   ],
                 ),
+                _botaoDeRegistrar(),
+                _botaoDeRegistrar(),
                 _botaoDeRegistrar(),
                 ],
               ),
