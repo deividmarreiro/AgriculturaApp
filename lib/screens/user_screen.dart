@@ -234,7 +234,9 @@ class _UserScreenState extends State<UserScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              LoginDelegate.mudarParaTelaDeCadastrarRecurso(context);
+            },
           ),
         ],
       ),
