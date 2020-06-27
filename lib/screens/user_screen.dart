@@ -231,6 +231,12 @@ class _UserScreenState extends State<UserScreen> {
         backgroundColor: Color(0xFF00E676),
         title: Text('Lista de Recursos'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ],
       ),
       drawer: Drawer(),
       body: Stack(
