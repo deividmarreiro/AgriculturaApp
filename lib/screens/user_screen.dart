@@ -1,4 +1,5 @@
 import 'package:agriculturapp/delegate/login_delegate.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class UserScreen extends StatefulWidget {
@@ -257,26 +258,196 @@ class _UserScreenState extends State<UserScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(label: Text('Nome')),
-                    DataColumn(label: Text('Tipo')),
-                    DataColumn(label: Text('Quantidade')),
-                  ],
-                  rows: const <DataRow>[
-                    DataRow(cells: <DataCell>[
-                      DataCell(Text('Feijão')),
-                      DataCell(Text('Plantação')),
-                      DataCell(Text('4845616515')),
-                    ])
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      //columnSpacing: 540,
+                      columns: [
+                        DataColumn(
+                          label: Center(
+                            child: Text(
+                              'Recurso',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Center(
+                            child: Text(
+                              'Tipo',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Center(
+                            child: Text(
+                              'Quantidade',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Center(
+                            child: Text(
+                              'Deletar',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                      rows: [
+                        DataRow(cells: [
+                          DataCell(
+                            Center(
+                              child: Text(
+                                'Feijão',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Center(
+                              child: Text(
+                                'Grão',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Center(
+                              child: Text(
+                                '748',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(
+                            Center(
+                              child: Text(
+                                'Feijão',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Center(
+                              child: Text(
+                                'Grão',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Center(
+                              child: Text(
+                                '748',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    FlatButton(
+                      color: Colors.white,
+                      child: Text(
+                        'ATUALIZAR',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {},
+                    ),
+                    FlatButton(
+                      color: Colors.white,
+                      child: Text(
+                        'CANCELAR',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {},
+                    ),
                   ],
                 ),
-                _botaoDeRegistrar(),
-                _botaoDeRegistrar(),
-                _botaoDeRegistrar(),
-                ],
-              ),
+              ],
+
+              //_botaoDeRegistrar(),
+              //_botaoDeRegistrar(),
+              //_botaoDeRegistrar(),
             ),
+          ),
         ],
       ),
     );

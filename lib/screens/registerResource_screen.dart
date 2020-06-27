@@ -1,13 +1,12 @@
 import 'package:agriculturapp/delegate/login_delegate.dart';
 import 'package:flutter/material.dart';
 
-class RegisterResourceScreen  extends StatefulWidget {
+class RegisterResourceScreen extends StatefulWidget {
   @override
   _RegisterResourceScreenState createState() => _RegisterResourceScreenState();
 }
 
 class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
-  bool _seLembre = false;
   Widget _constroiCadastroNome() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
