@@ -1,4 +1,4 @@
-import 'package:agriculturapp/delegate/login_delegate.dart';
+import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -7,6 +7,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   bool _seLembre = false;
   Widget _constroiEmail() {
     return Column(
@@ -181,64 +182,67 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF00C853),
-                  Color(0xFF00E676),
-                  Color(0xFF69F0AE),
-                  Color(0xFFB9F6CA),
-                ],
-                stops: [0.1, 0.4, 0.7, 0.9],
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF00C853),
+                    Color(0xFF00E676),
+                    Color(0xFF69F0AE),
+                    Color(0xFFB9F6CA),
+                  ],
+                  stops: [0.1, 0.4, 0.7, 0.9],
+                ),
               ),
             ),
-          ),
-          Container(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
-                horizontal: 40.0,
-                vertical: 120.0,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Entrar',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+            Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                  vertical: 120.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Entrar',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 30.0),
-                  _constroiEmail(),
-                  SizedBox(height: 30.0),
-                  _constroiSenha(),
-                  _constroiEsqueceuSenha(),
-                  _caixaLembreDeMim(),
-                  _botaoDeEntrar(),
-                  Container(
-                      child: Text(
-                    ' - OU - ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )),
-                  SizedBox(height: 20.0),
-                  _botaoRegistrar(),
-                ],
+                    SizedBox(height: 30.0),
+                    _constroiEmail(),
+                    SizedBox(height: 30.0),
+                    _constroiSenha(),
+                    _constroiEsqueceuSenha(),
+                    _caixaLembreDeMim(),
+                    _botaoDeEntrar(),
+                    Container(
+                        child: Text(
+                      ' - OU - ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )),
+                    SizedBox(height: 20.0),
+                    _botaoRegistrar(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

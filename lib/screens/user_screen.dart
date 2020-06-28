@@ -1,4 +1,4 @@
-import 'package:agriculturapp/delegate/login_delegate.dart';
+import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

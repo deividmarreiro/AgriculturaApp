@@ -1,4 +1,4 @@
-import 'package:agriculturapp/delegate/login_delegate.dart';
+import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/material.dart';
 
 class RegisterResourceScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Quantidade',
+          'Quantidade Inicial',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10.0),
