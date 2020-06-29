@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:agriculturapp/helpers/login_delegate.dart';
+import 'package:agriculturapp/services/register_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -7,6 +11,12 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _nomeController = TextEditingController();
+  final _emailConroller = TextEditingController();
+  final _senhaController = TextEditingController();
+  final _confirmarSenhaController = TextEditingController();
+
   Widget _constroiCadastroNome() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: 'Entre com seu Nome',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _nomeController,
           ),
         ),
       ],
@@ -83,6 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: 'Entre com seu Email',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _emailConroller,
           ),
         ),
       ],
@@ -125,6 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: 'Entre com sua Senha',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _senhaController,
           ),
         ),
       ],
@@ -167,10 +180,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: 'Confirme sua senha',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _confirmarSenhaController,
           ),
         ),
       ],
     );
+  }
+
+  Future<bool> cadastrarCliente() async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+
+    params["nome"] = _nomeController.text;
+    params["email"] = _emailConroller.text;
+    params["senha"] = _senhaController.text;
+
+    var body = json.encode(params);
+
+    var response = await http.post("http://10.0.2.2:4040/user/cadastrar",
+        headers: {"Content-Type": "application/json"}, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Widget _botaoDeRegistrar() {
@@ -179,7 +211,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Botão de registro apertado'),
+        onPressed: () {
+          cadastrarCliente().then((success) {
+            if (success) {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Usuário Cadastrado com Sucesso!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _nomeController.text = '';
+                        _emailConroller.text = '';
+                        _senhaController.text = '';
+                        _confirmarSenhaController.text = '';
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            } else {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Erro ao Cadastrar!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            }
+          });
+        },
         padding: EdgeInsets.all(15.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
