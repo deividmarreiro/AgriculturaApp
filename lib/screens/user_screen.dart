@@ -9,6 +9,7 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   bool _seLembre = false;
+
   Widget _constroiCadastroNome() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -433,7 +434,7 @@ class _UserScreenState extends State<UserScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () => LoginDelegate.mudarParaTelaDeGastos(context),
                     ),
                     FlatButton(
                       color: Colors.white,
