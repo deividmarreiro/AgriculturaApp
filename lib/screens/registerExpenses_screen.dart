@@ -1,7 +1,6 @@
 import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/material.dart';
 
-
 class ExpensesRegister extends StatefulWidget {
   @override
   _ExpensesRegisterState createState() => _ExpensesRegisterState();
@@ -116,9 +115,8 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
                   dropDownValue = newValue;
                 });
               },
-              items:
-              <String>['Água', 'Energia'].map<DropdownMenuItem<String>>(
-                    (String value) {
+              items: <String>['Água', 'Energia'].map<DropdownMenuItem<String>>(
+                (String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
@@ -138,6 +136,27 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
     );
   }
 
+  Widget _constroiCadastrarTipoGastos() {
+    return Container(
+      height: 20,
+      child: Row(
+        children: <Widget>[
+          FlatButton(
+            child: Text(
+              'Cadastrar Tipo',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () =>
+                LoginDelegate.mudarParaTelaDeCadastrarTipoDeGastos(context),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _botaoDeRegistrar() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -147,7 +166,7 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
         onPressed: () => print('Botão de cadastro apertado'),
         padding: EdgeInsets.all(15.0),
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
         color: Colors.white,
         child: Text(
           'CADASTRAR',
@@ -233,8 +252,7 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
                   _constroiCadastroEmail(),
                   SizedBox(height: 15.0),
                   _constroiCadastroSenha(),
-                  SizedBox(height: 15.0),
-                  //_constroiQuantidadeInicial(),
+                  _constroiCadastrarTipoGastos(),
                   SizedBox(height: 20.0),
                   _botaoDeRegistrar(),
                   SizedBox(height: 20.0),

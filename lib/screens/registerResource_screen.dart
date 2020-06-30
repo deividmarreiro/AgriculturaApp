@@ -180,6 +180,27 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
     );
   }
 
+  Widget _constroiCadastrarTipoGastos() {
+    return Container(
+      height: 20,
+      child: Row(
+        children: <Widget>[
+          FlatButton(
+            child: Text(
+              'Cadastrar Tipo',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () =>
+                LoginDelegate.mudarParaTelaDeCadastrarTipoDeRecurso(context),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _botaoDeRegistrar() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -275,9 +296,10 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                   _constroiCadastroEmail(),
                   SizedBox(height: 15.0),
                   _constroiCadastroSenha(),
+                  _constroiCadastrarTipoGastos(),
                   SizedBox(height: 15.0),
                   _constroiQuantidadeInicial(),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
                   _botaoDeRegistrar(),
                   SizedBox(height: 20.0),
                   //_botaoRegistrar(),
