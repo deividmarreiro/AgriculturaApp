@@ -62,6 +62,9 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
             DataColumn(
               label: Text('Problema'),
             ),
+            DataColumn(
+              label: Text('Editar / Deltar'),
+            ),
           ],
           rows: resources
               .map(
@@ -137,6 +140,26 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                         ),
                       ),
                     ),
+                    DataCell(
+                      Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -156,7 +179,8 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
             Icons.add,
             color: Colors.white,
           ),
-          onPressed: () => LoginDelegate.mudarParaTelaDeCadastrarRecurso(context),
+          onPressed: () =>
+              LoginDelegate.mudarParaTelaDeCadastrarRecurso(context),
         ),
         backgroundColor: Color(0xFF00E676),
         title: Text('Lista de Recursos'),
