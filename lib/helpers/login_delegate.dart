@@ -29,7 +29,7 @@ class LoginDelegate {
   static mudarParaTelaDeUsuario(BuildContext context) {
     Navigator.push(
         context,
-        CupertinoPageRoute(
+        MaterialPageRoute(
           builder: (context) => ResourcesScreen(),
         ));
   }
@@ -46,7 +46,7 @@ class LoginDelegate {
   static mudarParaTelaDeGastos(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (context) => ExpensesScreen(),
       ),
     );

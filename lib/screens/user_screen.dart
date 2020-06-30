@@ -151,13 +151,20 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
     return Scaffold(
       key: _resourcesKey,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () => LoginDelegate.mudarParaTelaDeCadastrarRecurso(context),
+        ),
         backgroundColor: Color(0xFF00E676),
         title: Text('Lista de Recursos'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.add,
+              Icons.forward,
             ),
             onPressed: () => LoginDelegate.mudarParaTelaDeGastos(context),
           )

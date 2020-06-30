@@ -110,6 +110,15 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         backgroundColor: Color(0xFF00E676),
         title: Text('Lista de Gastos'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: () => LoginDelegate.mudarParaTelaDeCadastrarGastos(context),
+          )
+        ],
       ),
       body: Container(
         child: Column(
