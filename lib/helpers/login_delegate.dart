@@ -18,7 +18,7 @@ class LoginDelegate {
   }
 
   static mudarParaTelaDeLogin(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LoginScreen(),
@@ -30,7 +30,7 @@ class LoginDelegate {
     Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => UserScreen(),
+          builder: (context) => ResourcesScreen(),
         ));
   }
 

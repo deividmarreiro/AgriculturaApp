@@ -7,38 +7,30 @@ import 'package:http/http.dart' as http;
 
 class ExpensesScreen extends StatefulWidget {
   @override
-  _ExpensesSCreenState createState() => _ExpensesSCreenState();
+  _ExpensesScreenState createState() => _ExpensesScreenState();
 }
 
-class _ExpensesSCreenState extends State<ExpensesScreen> {
-  var expenses = List<ExpensesServices>();
+class _ExpensesScreenState extends State<ExpensesScreen> {
+  List<ExpensesServices> expenses;
+  GlobalKey<ScaffoldState> _expensesKey;
+
+  @override
+  void initState() {
+    super.initState();
+    expenses = [];
+    _expensesKey = GlobalKey();
+    _getExpenses();
+  }
 
   _getExpenses() {
-    ExpensesServices.getExpenses().then((response) {
+    ExpensesServices.getExpenses().then((_expenses) {
       setState(() {
-        List list = [json.decode(response.body)];
-        expenses =
-            list.map((model) => ExpensesServices.fromJson(model)).toList();
+        expenses = _expenses;
       });
     });
   }
 
-  _ExpensesSCreenState() {
-    _getExpenses();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Lista de Gastos'),
-        centerTitle: true,
-      ),
-      body: listaDeGastos(),
-    );
-  }
-
-  listaDeGastos() {
+  SingleChildScrollView _dataBody() {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
@@ -61,13 +53,13 @@ class _ExpensesSCreenState extends State<ExpensesScreen> {
           ],
           rows: expenses
               .map(
-                (expenses) => DataRow(
+                (_expenses) => DataRow(
                   cells: [
                     DataCell(
                       Container(
                         width: 100,
                         child: Text(
-                          expenses.id,
+                          _expenses.id.toString(),
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -78,7 +70,7 @@ class _ExpensesSCreenState extends State<ExpensesScreen> {
                       Container(
                         width: 100,
                         child: Text(
-                          expenses.mes.toUpperCase().toString(),
+                          _expenses.mes.toString(),
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -87,7 +79,7 @@ class _ExpensesSCreenState extends State<ExpensesScreen> {
                     ),
                     DataCell(
                       Text(
-                        expenses.qtdMensal().toString(),
+                        _expenses.qtdMensal.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -95,7 +87,7 @@ class _ExpensesSCreenState extends State<ExpensesScreen> {
                     ),
                     DataCell(
                       Text(
-                        expenses.mediaGasto().toString(),
+                        _expenses.mediaGasto.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -105,6 +97,28 @@ class _ExpensesSCreenState extends State<ExpensesScreen> {
                 ),
               )
               .toList(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _expensesKey,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF00E676),
+        title: Text('Lista de Gastos'),
+        centerTitle: true,
+      ),
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: _dataBody(),
+            ),
+          ],
         ),
       ),
     );

@@ -7,20 +7,33 @@ class ExpensesServices {
   dynamic mes;
   dynamic qtdMensal;
 
-  ExpensesServices({this.mediaGasto, this.mes, this.qtdMensal});
+  ExpensesServices({this.id, this.mediaGasto, this.mes, this.qtdMensal});
 
-  ExpensesServices.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    mediaGasto = json['media_gasto'];
-    mes = json['mes'];
-    qtdMensal = json['qtd_mensal'];
+  factory ExpensesServices.fromJson(Map<String, dynamic> json) {
+    return ExpensesServices(
+      id: json['id'] as int,
+      mediaGasto: json['media_gasto'] as double,
+      mes: json['mes'] as String,
+      qtdMensal: json['qtd_mensal'] as double,
+    );
   }
 
-  static const baseUrl = "http://10.0.2.2:8090/";
+  static const baseUrl = "http://10.0.2.2:8090";
 
-  static Future getExpenses() async {
-    var url = baseUrl + "/gasto";
-    return await http.get(url);
+  static Future<List<ExpensesServices>> getExpenses() async {
+    try{
+      var url = baseUrl + "/gasto";
+      final response =
+      await http.get(url, headers: {"Content-Type": "application/json"});
+      if (200 == response.statusCode) {
+        List<ExpensesServices> list = parseResponse(response.body);
+        return list;
+      } else {
+        return List<ExpensesServices>();
+      }
+    }catch(e) {
+      return List<ExpensesServices>();
+    }
   }
 
   static List<ExpensesServices> parseResponse(String responseBody) {
