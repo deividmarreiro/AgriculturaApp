@@ -26,9 +26,9 @@ class ResourseServices {
     return ResourseServices(
       id: json['id'] as int,
       nome: json['nome'] as String,
-      qtdInicial: json['qtd_inicial'] as double,
-      qtdFinal: json['qtd_final'] as double,
-      produtividadeEsperada: json['produtividade_esperada'] as double,
+      qtdInicial: json['qtd_inicial'] as int,
+      qtdFinal: json['qtd_final'] as int,
+      produtividadeEsperada: json['produtividade_esperada'] as int,
       produtividade: json['produtividade'] as double,
       problema: json['problema'] as String,
       tipoRecurso: json['tp_recurso_id'] as int,

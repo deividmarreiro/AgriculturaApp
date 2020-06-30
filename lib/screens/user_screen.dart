@@ -71,7 +71,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                       Container(
                         width: 100,
                         child: Text(
-                          _resources.id,
+                          _resources.id.toString(),
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -82,7 +82,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                       Container(
                         width: 100,
                         child: Text(
-                          _resources.nome,
+                          _resources.nome.toString(),
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -91,7 +91,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                     DataCell(
                       Text(
-                        _resources.tipoRecurso,
+                        _resources.tipoRecurso.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -99,7 +99,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                     DataCell(
                       Text(
-                        _resources.qtdInicial,
+                        _resources.qtdInicial.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -107,7 +107,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                     DataCell(
                       Text(
-                        _resources.qtdFinal,
+                        _resources.qtdFinal.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -115,7 +115,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                     DataCell(
                       Text(
-                        _resources.produtividade,
+                        _resources.produtividade.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -123,7 +123,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                     DataCell(
                       Text(
-                        _resources.produtividadeEsperada,
+                        _resources.produtividadeEsperada.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -131,7 +131,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                     DataCell(
                       Text(
-                        _resources.problema,
+                        _resources.problema.toString(),
                         style: TextStyle(
                           color: Colors.black,
                         ),
