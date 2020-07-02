@@ -1,4 +1,6 @@
 import 'package:agriculturapp/screens/expenses_screen.dart';
+import 'package:agriculturapp/screens/lista_tipogasto.dart';
+import 'package:agriculturapp/screens/lista_tiporecursos.dart';
 import 'package:agriculturapp/screens/login_screen.dart';
 import 'package:agriculturapp/screens/registerExpenses_screen.dart';
 import 'package:agriculturapp/screens/registerResource_screen.dart';
@@ -28,7 +30,7 @@ class LoginDelegate {
     );
   }
 
-  static mudarParaTelaDeUsuario(BuildContext context) {
+  static mudarParaTelaDeRecursos(BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -77,6 +79,24 @@ class LoginDelegate {
       context,
       MaterialPageRoute(
         builder: (context) => RegisterTypeScreenResources(),
+      ),
+    );
+  }
+
+  static mudarParaTelaDeTipodeRecurso(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => lista_tiporecurso(),
+      ),
+    );
+  }
+
+  static mudarParaTelaDeTipodeGsto(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => lista_tipogasto(),
       ),
     );
   }

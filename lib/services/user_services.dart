@@ -10,17 +10,20 @@ class ResourseServices {
   dynamic produtividade;
   dynamic problema;
   dynamic tipoRecurso;
+  dynamic dtEntrada;
+  dynamic dtSaida;
 
-  ResourseServices({
-    this.id,
-    this.nome,
-    this.qtdInicial,
-    this.qtdFinal,
-    this.produtividadeEsperada,
-    this.produtividade,
-    this.problema,
-    this.tipoRecurso,
-  });
+  ResourseServices(
+      {this.id,
+      this.nome,
+      this.qtdInicial,
+      this.qtdFinal,
+      this.produtividadeEsperada,
+      this.produtividade,
+      this.problema,
+      this.tipoRecurso,
+      this.dtEntrada,
+      this.dtSaida});
 
   factory ResourseServices.fromJson(Map<String, dynamic> json) {
     return ResourseServices(
@@ -31,7 +34,9 @@ class ResourseServices {
       produtividadeEsperada: json['produtividade_esperada'] as int,
       produtividade: json['produtividade'] as double,
       problema: json['problema'] as String,
-      tipoRecurso: json['tp_recurso_id'] as int,
+      dtEntrada: json['dt_entrada'] as String,
+      dtSaida: json['dt_saida'] as String,
+      tipoRecurso: json['tp_gasto_id'] as int,
     );
   }
 
@@ -50,6 +55,21 @@ class ResourseServices {
       }
     } catch (e) {
       return List<ResourseServices>();
+    }
+  }
+
+  static Future<dynamic> deleteResources(String id) async {
+    try {
+      var url = baseUrl + "/recursos/deletar/$id";
+      final response =
+          await http.delete(url, headers: {"Content-Type": "application/json"});
+      if (200 == response.statusCode) {
+        return response.statusCode;
+      } else {
+        return 'error';
+      }
+    } catch (e) {
+      return 'error';
     }
   }
 

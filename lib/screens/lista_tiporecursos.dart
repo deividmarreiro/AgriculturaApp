@@ -2,57 +2,41 @@ import 'dart:convert';
 
 import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:agriculturapp/services/expenses_services.dart';
+import 'package:agriculturapp/services/tiporecurso_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class ExpensesScreen extends StatefulWidget {
+class lista_tiporecurso extends StatefulWidget {
   @override
-  _ExpensesScreenState createState() => _ExpensesScreenState();
+  _lista_tiporecursoState createState() => _lista_tiporecursoState();
 }
 
-class _ExpensesScreenState extends State<ExpensesScreen> {
-  List<ExpensesServices> expenses;
+class _lista_tiporecursoState extends State<lista_tiporecurso> {
+  List<tiporecurso_service> tp_recurso;
   GlobalKey<ScaffoldState> _expensesKey;
-  TextEditingController _mesController;
-  TextEditingController _qtdMensalController;
 
   @override
   void initState() {
     super.initState();
-    expenses = [];
+    tp_recurso = [];
     _expensesKey = GlobalKey();
     _getExpenses();
-    _mesController = TextEditingController();
-    _qtdMensalController = TextEditingController();
   }
 
   _getExpenses() {
-    ExpensesServices.getExpenses().then((_expenses) {
+    tiporecurso_service.getExpenses().then((_tp_recurso) {
       setState(() {
-        expenses = _expenses;
+        tp_recurso = _tp_recurso;
       });
     });
   }
 
-  _deleteExpenses(ExpensesServices expenses) {
-    ExpensesServices.deleteExpenses(expenses.id.toString()).then((result) {
+  _deleteResourcesType(tiporecurso_service expenses) {
+    tiporecurso_service.deleteResourceType(expenses.id.toString()).then((result) {
       if (200 == result) {
         _getExpenses();
       }
     });
-  }
-
-  _editExpenses(ExpensesServices expenses) {
-    return ;
-  }
-
-  _showExpenses(ExpensesServices list) {
-    _mesController.text = list.mes.toString();
-    _qtdMensalController.text = list.qtdMensal.toString();
-
-    if (list.id != null) {
-      return _editExpenses(list);
-    }
   }
 
   SingleChildScrollView _dataBody() {
@@ -63,69 +47,58 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         child: DataTable(
           columns: [
             DataColumn(
-              label: Text('Mes'),
+              label: Text('Nome'),
             ),
-            DataColumn(
-              label: Text('Valor Mensal'),
-            ),
-            // Lets add one more column to show a delete button
             DataColumn(
               label: Text('Editar / Deletar'),
             ),
           ],
-          rows: expenses
+          rows: tp_recurso
               .map(
-                (_expenses) => DataRow(
-                  cells: [
-                    DataCell(
-                      Container(
-                        width: 100,
-                        child: Text(
-                          _expenses.mes.toString(),
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
+                (_tp_recurso) => DataRow(
+              cells: [
+                DataCell(
+                  Container(
+                    width: 230,
+                    child: Text(
+                      _tp_recurso.nome.toString(),
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
                     ),
-                    DataCell(
-                      Text(
-                        _expenses.qtdMensal.toString(),
-                        style: TextStyle(
+                  ),
+                ),
+                DataCell(
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(
+                          Icons.edit,
                           color: Colors.black,
                         ),
+                        onPressed: () {},
                       ),
-                    ),
-                    DataCell(
-                      Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              _showExpenses(_expenses);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.black,
-                            ),
-                            onPressed: () => _deleteExpenses(_expenses),
-                          ),
-                        ],
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          _deleteResourcesType(_tp_recurso);
+                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )
+              ],
+            ),
+          )
               .toList(),
         ),
       ),
     );
   }
+
 
   @override
   @override
@@ -134,15 +107,14 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       key: _expensesKey,
       appBar: AppBar(
         backgroundColor: Color(0xFF00E676),
-        title: const Text('Gastos'),
+        title: const Text('Tipo Recurso'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(
               Icons.add,
             ),
-            onPressed: () =>
-                LoginDelegate.mudarParaTelaDeCadastrarGastos(context),
+            onPressed: () => LoginDelegate.mudarParaTelaDeCadastrarTipoDeRecurso(context),
           )
         ],
       ),
@@ -174,6 +146,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             ),
             ListTile(
               title: Text('Perfil'),
+                onTap: () => LoginDelegate.mudarParaTelaDeLogin(context)
             ),
             ListTile(
               title: Text('Recursos'),

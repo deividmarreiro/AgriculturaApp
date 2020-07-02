@@ -30,6 +30,14 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
     });
   }
 
+  _deleteResource(ResourseServices resourse) {
+    ResourseServices.deleteResources(resourse.id.toString()).then((result) {
+      if (200 == result) {
+        _getResources();
+      }
+    });
+  }
+
   SingleChildScrollView _dataBody() {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -37,9 +45,6 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columns: [
-            DataColumn(
-              label: Text('ID'),
-            ),
             DataColumn(
               label: Text('Nome'),
             ),
@@ -63,24 +68,19 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
               label: Text('Problema'),
             ),
             DataColumn(
-              label: Text('Editar / Deltar'),
+              label: Text('Data Entrada'),
+            ),
+            DataColumn(
+              label: Text('Data Saida'),
+            ),
+            DataColumn(
+              label: Text('Editar / Deletar'),
             ),
           ],
           rows: resources
               .map(
                 (_resources) => DataRow(
                   cells: [
-                    DataCell(
-                      Container(
-                        width: 100,
-                        child: Text(
-                          _resources.id.toString(),
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
                     DataCell(
                       Container(
                         width: 100,
@@ -141,6 +141,22 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                       ),
                     ),
                     DataCell(
+                      Text(
+                        _resources.dtEntrada.toString(),
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    DataCell(
+                      Text(
+                        _resources.dtSaida.toString(),
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    DataCell(
                       Row(
                         children: <Widget>[
                           IconButton(
@@ -155,7 +171,9 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                               Icons.delete,
                               color: Colors.black,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              _deleteResource(_resources);
+                            },
                           ),
                         ],
                       ),
@@ -174,25 +192,66 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
     return Scaffold(
       key: _resourcesKey,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onPressed: () =>
-              LoginDelegate.mudarParaTelaDeCadastrarRecurso(context),
-        ),
         backgroundColor: Color(0xFF00E676),
-        title: Text('Lista de Recursos'),
+        title: const Text('Recursos'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.forward,
+              Icons.add,
             ),
-            onPressed: () => LoginDelegate.mudarParaTelaDeGastos(context),
+            onPressed: () =>
+                LoginDelegate.mudarParaTelaDeCadastrarRecurso(context),
           )
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF00C853),
+                    Color(0xFF00E676),
+                    Color(0xFF69F0AE),
+                    Color(0xFFB9F6CA),
+                  ],
+                  stops: [0.1, 0.4, 0.7, 0.9],
+                ),
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Perfil'),
+            ),
+            ListTile(
+              title: Text('Recursos'),
+              onTap: () => LoginDelegate.mudarParaTelaDeRecursos(context),
+            ),
+            ListTile(
+              title: Text('Gastos'),
+              onTap: () => LoginDelegate.mudarParaTelaDeGastos(context),
+            ),
+            ListTile(
+              title: Text('Tipo de Recurso'),
+              onTap: () => LoginDelegate.mudarParaTelaDeTipodeRecurso(context),
+            ),
+            ListTile(
+              title: Text('Tipo de Gasto'),
+              onTap: () => LoginDelegate.mudarParaTelaDeTipodeGsto(context),
+            ),
+          ],
+        ),
       ),
       body: Container(
         child: Column(

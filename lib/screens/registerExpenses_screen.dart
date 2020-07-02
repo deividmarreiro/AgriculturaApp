@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ExpensesRegister extends StatefulWidget {
   @override
@@ -7,9 +10,14 @@ class ExpensesRegister extends StatefulWidget {
 }
 
 class _ExpensesRegisterState extends State<ExpensesRegister> {
+  final _formKey = GlobalKey<FormState>();
+  final _mesController = TextEditingController();
+  final _qtd_mensalController = TextEditingController();
+
+
   String dropDownValue = 'Água';
 
-  Widget _constroiCadastroNome() {
+  Widget _constroiCadastroMes() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -41,21 +49,22 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
                 Icons.dashboard,
                 color: Colors.white,
               ),
-              hintText: 'Entre com o Nome do Recurso',
+              hintText: 'Mês',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _mesController,
           ),
         ),
       ],
     );
   }
 
-  Widget _constroiCadastroEmail() {
+  Widget _constroiCadastroQtdMensal() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Quantidade Mensal',
+          'Valor Mensal',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10.0),
@@ -82,16 +91,17 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
                 Icons.add,
                 color: Colors.white,
               ),
-              hintText: 'Entre com a Quantidade',
+              hintText: 'Quantidade',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _qtd_mensalController,
           ),
         ),
       ],
     );
   }
 
-  Widget _constroiCadastroSenha() {
+  Widget _constroiCadastroTipoGasto() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -136,37 +146,55 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
     );
   }
 
-  Widget _constroiCadastrarTipoGastos() {
-    return Container(
-      height: 20,
-      child: Row(
-        children: <Widget>[
-          FlatButton(
-            child: Text(
-              'Cadastrar Tipo',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onPressed: () =>
-                LoginDelegate.mudarParaTelaDeCadastrarTipoDeGastos(context),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _botaoDeRegistrar() {
+  Widget _btnCadastrar() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Botão de cadastro apertado'),
+        onPressed: () {
+          cadastrarGasto().then((success) {
+            if (success) {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Cadastrado realizado com sucesso!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _mesController.text = '';
+                        _qtd_mensalController.text = '';
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            } else {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Erro ao Cadastrar!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            }
+          });
+        },
         padding: EdgeInsets.all(15.0),
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
         color: Colors.white,
         child: Text(
           'CADASTRAR',
@@ -181,29 +209,23 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
     );
   }
 
-  Widget _botaoRegistrar() {
-    return GestureDetector(
-      onTap: () => LoginDelegate.mudarParaTelaDeLogin(context),
-      child: RichText(
-        text: TextSpan(children: [
-          TextSpan(
-              text: 'Já tem uma conta? ',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              )),
-          TextSpan(
-              text: 'Efetue o Login ',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w900,
-              )),
-        ]),
-      ),
-    );
+  Future<bool> cadastrarGasto() async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+
+    params["mes"] = _mesController.text;
+    params["qtd_mensal"] = _qtd_mensalController.text;
+
+    var body = json.encode(params);
+
+    var response = await http.post("http://10.0.2.2:8090/gasto/cadastrar",
+        headers: {"Content-Type": "application/json"}, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -247,14 +269,13 @@ class _ExpensesRegisterState extends State<ExpensesRegister> {
                     ),
                   ),
                   SizedBox(height: 30.0),
-                  _constroiCadastroNome(),
+                  _constroiCadastroMes(),
                   SizedBox(height: 15.0),
-                  _constroiCadastroEmail(),
+                  _constroiCadastroQtdMensal(),
                   SizedBox(height: 15.0),
-                  _constroiCadastroSenha(),
-                  _constroiCadastrarTipoGastos(),
+                  _constroiCadastroTipoGasto(),
                   SizedBox(height: 20.0),
-                  _botaoDeRegistrar(),
+                  _btnCadastrar(),
                   SizedBox(height: 20.0),
                   //_botaoRegistrar(),
                 ],

@@ -49,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Icons.person_outline,
                 color: Colors.white,
               ),
-              hintText: 'Entre com seu Nome',
+              hintText: 'Nome Completo',
               hintStyle: TextStyle(color: Colors.white54),
             ),
             controller: _nomeController,
@@ -91,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Icons.email,
                 color: Colors.white,
               ),
-              hintText: 'Entre com seu Email',
+              hintText: 'E-mail',
               hintStyle: TextStyle(color: Colors.white54),
             ),
             controller: _emailConroller,
@@ -134,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Icons.vpn_key,
                 color: Colors.white,
               ),
-              hintText: 'Entre com sua Senha',
+              hintText: 'Senha',
               hintStyle: TextStyle(color: Colors.white54),
             ),
             controller: _senhaController,
@@ -187,23 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Future<bool> cadastrarCliente() async {
-    Map<String, dynamic> params = Map<String, dynamic>();
 
-    params["nome"] = _nomeController.text;
-    params["email"] = _emailConroller.text;
-    params["senha"] = _senhaController.text;
-
-    var body = json.encode(params);
-
-    var response = await http.post("http://10.0.2.2:4040/user/cadastrar",
-        headers: {"Content-Type": "application/json"}, body: body);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   Widget _botaoDeRegistrar() {
     return Container(
@@ -216,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (success) {
               showDialog(
                 builder: (context) => AlertDialog(
-                  title: Text('Usuário Cadastrado com Sucesso!'),
+                  title: Text('Cadastrado realizado com sucesso!'),
                   actions: <Widget>[
                     FlatButton(
                       onPressed: () {
@@ -267,6 +251,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> cadastrarCliente() async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+
+    params["nome"] = _nomeController.text;
+    params["email"] = _emailConroller.text;
+    params["senha"] = _senhaController.text;
+
+    var body = json.encode(params);
+
+    var response = await http.post("http://10.0.2.2:8090/user/cadastrar",
+        headers: {"Content-Type": "application/json"}, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Widget _botaoRegistrar() {

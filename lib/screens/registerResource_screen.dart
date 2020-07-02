@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 
 class RegisterResourceScreen extends StatefulWidget {
@@ -8,6 +11,13 @@ class RegisterResourceScreen extends StatefulWidget {
 }
 
 class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _nomeController = TextEditingController();
+  final _qtd_incialController = TextEditingController();
+  final _produtividade_esperadaController = TextEditingController();
+  final _dtEntradaController = TextEditingController();
+
+
   String dropDownValue = 'Plantação';
 
   Widget _constroiCadastroNome() {
@@ -42,21 +52,22 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                 Icons.dashboard,
                 color: Colors.white,
               ),
-              hintText: 'Entre com o Nome do Recurso',
+              hintText: 'Nome',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _nomeController,
           ),
         ),
       ],
     );
   }
 
-  Widget _constroiCadastroEmail() {
+  Widget _constroiCadastroQtdInicial() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Quantidade Inicial',
+          'Quantidade inicial',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10.0),
@@ -74,6 +85,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
               ]),
           height: 60.0,
           child: TextField(
+            obscureText: false,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -83,16 +95,17 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                 Icons.add,
                 color: Colors.white,
               ),
-              hintText: 'Entre com a Quantidade',
+              hintText: 'Quantidade',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _qtd_incialController,
           ),
         ),
       ],
     );
   }
 
-  Widget _constroiCadastroSenha() {
+  Widget _constroiCadastroTipoRecurso() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -116,9 +129,8 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                   dropDownValue = newValue;
                 });
               },
-              items:
-                  <String>['Plantação', 'Animal'].map<DropdownMenuItem<String>>(
-                (String value) {
+              items: <String>['Plantação', 'Animal'].map<DropdownMenuItem<String>>(
+                    (String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
@@ -138,7 +150,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
     );
   }
 
-  Widget _constroiQuantidadeInicial() {
+  Widget _constroiCadastroProdutividadeEsperada() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -161,7 +173,7 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
               ]),
           height: 60.0,
           child: TextField(
-            obscureText: true,
+            obscureText: false,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -171,46 +183,108 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                 Icons.add,
                 color: Colors.white,
               ),
-              hintText: 'Entre com a Produtividade Esperada',
+              hintText: 'Produtividade Esperada',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _produtividade_esperadaController,
           ),
         ),
       ],
     );
   }
 
-  Widget _constroiCadastrarTipoGastos() {
-    return Container(
-      height: 20,
-      child: Row(
-        children: <Widget>[
-          FlatButton(
-            child: Text(
-              'Cadastrar Tipo',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+  Widget _constroiCadastroiDtEntrada() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Data Entrada',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+              color: Colors.black38,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6.0,
+                  offset: Offset(0, 2),
+                ),
+              ]),
+          height: 60.0,
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.calendar_today,
+                color: Colors.white,
               ),
+              hintText: 'Data',
+              hintStyle: TextStyle(color: Colors.white54),
             ),
-            onPressed: () =>
-                LoginDelegate.mudarParaTelaDeCadastrarTipoDeRecurso(context),
+            controller: _dtEntradaController,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _botaoDeRegistrar() {
+  Widget _btnCadastrar() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Botão de cadastro apertado'),
+        onPressed: () {
+          cadastrarRecurso().then((success) {
+            if (success) {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Cadastrado realizado com sucesso!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _nomeController.text = '';
+                        _qtd_incialController.text = '';
+                        _produtividade_esperadaController.text = '';
+                        _dtEntradaController.text = '';
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            } else {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Erro ao Cadastrar!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            }
+          });
+        },
         padding: EdgeInsets.all(15.0),
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
         color: Colors.white,
         child: Text(
           'CADASTRAR',
@@ -225,28 +299,24 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
     );
   }
 
-  Widget _botaoRegistrar() {
-    return GestureDetector(
-      onTap: () => LoginDelegate.mudarParaTelaDeLogin(context),
-      child: RichText(
-        text: TextSpan(children: [
-          TextSpan(
-              text: 'Já tem uma conta? ',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              )),
-          TextSpan(
-              text: 'Efetue o Login ',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w900,
-              )),
-        ]),
-      ),
-    );
+  Future<bool> cadastrarRecurso() async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+
+    params["nome"] = _nomeController.text;
+    params["qtd_inicial"] = _qtd_incialController.text;
+    params["produtividade_esperada"] = _produtividade_esperadaController.text;
+    params["dt_entrada"] = _dtEntradaController.text;
+
+
+    var body = json.encode(params);
+
+    var response = await http.post("http://10.0.2.2:8090/recursos/cadastrar",
+        headers: {"Content-Type": "application/json"}, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -293,14 +363,15 @@ class _RegisterResourceScreenState extends State<RegisterResourceScreen> {
                   SizedBox(height: 30.0),
                   _constroiCadastroNome(),
                   SizedBox(height: 15.0),
-                  _constroiCadastroEmail(),
+                  _constroiCadastroQtdInicial(),
                   SizedBox(height: 15.0),
-                  _constroiCadastroSenha(),
-                  _constroiCadastrarTipoGastos(),
+                  _constroiCadastroTipoRecurso(),
                   SizedBox(height: 15.0),
-                  _constroiQuantidadeInicial(),
+                  _constroiCadastroProdutividadeEsperada(),
                   SizedBox(height: 15.0),
-                  _botaoDeRegistrar(),
+                  _constroiCadastroiDtEntrada(),
+                  SizedBox(height: 15.0),
+                  _btnCadastrar(),
                   SizedBox(height: 20.0),
                   //_botaoRegistrar(),
                 ],

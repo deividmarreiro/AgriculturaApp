@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:agriculturapp/helpers/login_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterTypeScreenResources extends StatefulWidget {
   @override
@@ -7,6 +10,8 @@ class RegisterTypeScreenResources extends StatefulWidget {
 }
 
 class _RegisterTypeScreenResourcesState extends State<RegisterTypeScreenResources> {
+  final _formKey = GlobalKey<FormState>();
+  final _nomeController = TextEditingController();
 
   Widget _constroiCadastroNome() {
     return Column(
@@ -40,22 +45,60 @@ class _RegisterTypeScreenResourcesState extends State<RegisterTypeScreenResource
                 Icons.dashboard,
                 color: Colors.white,
               ),
-              hintText: 'Entre com o Nome do Tipo de Recurso',
+              hintText: 'Nome',
               hintStyle: TextStyle(color: Colors.white54),
             ),
+            controller: _nomeController,
           ),
         ),
       ],
     );
   }
 
-  Widget _botaoDeRegistrar() {
+  Widget _btnCadastrar() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Botão de cadastro apertado'),
+        onPressed: () {
+          cadastrarTipoRecurso().then((success) {
+            if (success) {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Cadastrado realizado com sucesso!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _nomeController.text = '';
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            } else {
+              showDialog(
+                builder: (context) => AlertDialog(
+                  title: Text('Erro ao Cadastrar!'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+                context: context,
+              );
+              return;
+            }
+          });
+        },
         padding: EdgeInsets.all(15.0),
         shape:
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
@@ -71,6 +114,22 @@ class _RegisterTypeScreenResourcesState extends State<RegisterTypeScreenResource
         ),
       ),
     );
+  }
+
+  Future<bool> cadastrarTipoRecurso() async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+
+    params["nome"] = _nomeController.text;
+
+    var body = json.encode(params);
+
+    var response = await http.post("http://10.0.2.2:8090/tiporecurso/cadastrar",
+        headers: {"Content-Type": "application/json"}, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
@@ -118,7 +177,7 @@ class _RegisterTypeScreenResourcesState extends State<RegisterTypeScreenResource
                   ),
                   SizedBox(height: 30.0),
                   _constroiCadastroNome(),
-                  _botaoDeRegistrar(),
+                  _btnCadastrar(),
                   SizedBox(height: 20.0),
                   //_botaoRegistrar(),
                 ],
